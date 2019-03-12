@@ -1,10 +1,15 @@
 const path=require("path");
 const merge=require("webpack-merge");
 const baseConfig=require("./webpack.base.config");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
 const CopyPlugin = require('copy-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 module.exports=merge(baseConfig,{
     mode:"production",
+    entry:{
+        index:path.resolve(__dirname,'./src/main.js'),
+    },
     plugins:[
         new BundleAnalyzerPlugin({
             analyzerPort:9090
@@ -15,6 +20,12 @@ module.exports=merge(baseConfig,{
     ],
     optimization:{
         minimize:true,
+        minimizer:[
+            new UglifyJsPlugin({
+                test: /\.js(\?.*)?$/i,
+                sourceMap:true
+            })
+        ],
         splitChunks:{
             chunks: 'async',
             minSize: 30000,

@@ -4,19 +4,18 @@ const baseConfig=require("./webpack.base.config");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 module.exports=merge(baseConfig,{
     mode:"development",
+    entry:{
+        index:path.resolve(__dirname,'./src/main.js'),
+    },
     devServer: {
-        historyApiFallback: {
-            rewrites: [
-                { from: /.*/, to: path.posix.join('/dist', 'index.html') },
-            ],
-        },
-        publicPath:"/assets/",
+        historyApiFallback: true,
+        publicPath:"/",
         hot: true,
         host:"localhost",
-        port:9999,
-        contentBase: path.join(__dirname, "/static/")
+        port:8000,
+        contentBase: path.join(__dirname, "/dist")
     },
     plugins:[
-        new BundleAnalyzerPlugin()
+        // new BundleAnalyzerPlugin()
     ]
 });
